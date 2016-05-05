@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Laba_4
+namespace Laba_6
 {
     class ArrayVector : AbstractVector
     {
