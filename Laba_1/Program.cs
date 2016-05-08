@@ -9,14 +9,23 @@ namespace Laba_7
 {
     class Program
     {
-        static int ReadInt(string message)
+        static int ReadInt(string message, int minValue, int maxValue)
         {
             while (true)
                 try {
-                    return int.Parse(ReadLine(message));
+                    int value = int.Parse(ReadLine(message));
+                    if (value >= minValue && value <= maxValue)
+                    {
+                        return value;
+                    }
+                    else
+                    {
+                        Print("Введено некорректное значение. Повторите ввод");
+                    }
                 }
                 catch { }
         }
+
         static double ReadDouble(string message)
         {
             while (true)
@@ -32,6 +41,7 @@ namespace Laba_7
             Console.WriteLine(message);
             return Console.ReadLine();
         }
+
         static void Print(string message) {
             Console.WriteLine(message);
         }
@@ -46,7 +56,7 @@ namespace Laba_7
 
             while (vector == null)
             {
-                int size = ReadInt("Введите 0, если хотите создать массив(Vector) фиксированной размерности 5, в ином случае введите размерность массива");
+                int size = ReadInt("Введите 0, если хотите создать массив(Vector) фиксированной размерности 5, в ином случае введите размерность массива", 0, Int32.MaxValue);
                 if (size == 0)
                 {
                     switch (type)
@@ -57,15 +67,10 @@ namespace Laba_7
                 }
                 else
                 {
-                    if (size > 0)
-                        switch (type)
-                        {
-                            case VectorType.ARRAY: vector = new ArrayVector(size); break;
-                            case VectorType.LINKED: vector = new LinkedListVector(size); break;
-                        }
-                    else
+                    switch (type)
                     {
-                        Console.WriteLine("неверный формат данных, введите друое значение");
+                        case VectorType.ARRAY: vector = new ArrayVector(size); break;
+                        case VectorType.LINKED: vector = new LinkedListVector(size); break;
                     }
                 }
             }
@@ -83,11 +88,109 @@ namespace Laba_7
             }
         }
 
+        delegate void MenuItem();
+
+        static List<Tuple<string, MenuItem>> menuItems;
+
+        static List<Vector> vectors;
+
+        static Program()
+        {
+            vectors = new List<Vector>();
+
+            menuItems = new List<Tuple<string, MenuItem>>();
+            menuItems.Add(new Tuple<string, MenuItem>("Добавить вектор", AddVector));
+            menuItems.Add(new Tuple<string, MenuItem>("Вывести вектор", PrintVector));
+            menuItems.Add(new Tuple<string, MenuItem>("Удалить вектор", RemoveVector));
+            menuItems.Add(new Tuple<string, MenuItem>("Вывести все вектора", PrintAllVectors));
+        }
+
+        static void AddVector()
+        {
+            int vectorType = ReadInt("Введите 1, если хотите добавить ArrayVector. Введите 2, если хотите добавить LinkedListVector.", 1, 2);
+
+            Vector vector = null;
+            if (vectorType == 1)
+            {
+                vector = ReadVector(VectorType.ARRAY);
+            }
+            else
+            {
+                vector = ReadVector(VectorType.LINKED);
+            }
+
+            vectors.Add(vector);
+        }
+
+        static void PrintVector()
+        {
+            int vectorIndex = ReadInt("Введите индекс вектора (от 1 до " + vectors.Count + "), элементы которого надо отобразить.", 1, vectors.Count);
+            PrintVector(vectorIndex - 1);
+        }
+
+        static void PrintAllVectors()
+        {
+            for (int index = 0; index < vectors.Count; ++index)
+            {
+                PrintVector(index);
+            }
+        }
+
+        static void PrintVector(int index)
+        {
+            Console.WriteLine("Размер и элементы вектора с индексом {0}: {1}", index + 1, vectors[index]);
+        }
+
+        static void RemoveVector()
+        {
+            int vectorIndex = ReadInt("Введите индекс вектора (от 1 до " + vectors.Count + "), который надо удалить.", 1, vectors.Count);
+            vectors.RemoveAt(vectorIndex - 1);
+            Console.WriteLine("Вектор удален");
+        }
+
+        static void PrintMenuItems()
+        {
+            for (int index = 0; index < menuItems.Count; ++index)
+            {
+                Console.WriteLine("{0}: {1}", index + 1, menuItems[index].Item1);
+            }
+        }
+
         static void Main(string[] args)
         {
-            TestStreams();
-                
-            //TestArrayOfVectors();
+            while (true)
+            {
+                PrintMenuItems();
+
+                int numberOfOperations = ReadInt("Введите количество операций, которые вы хотите провести. Для завершения работы введите 0.", 0, Int32.MaxValue);
+                if (numberOfOperations == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    MenuItem[] items = new MenuItem[numberOfOperations];
+                    for (int i = 0; i < numberOfOperations; ++i)
+                    {
+                        PrintMenuItems();
+
+                        int index = ReadInt("Введите индекс операции (от 1 до " + menuItems.Count + ")", 1, menuItems.Count);
+                        items[i] = menuItems[index - 1].Item2;
+                    }
+
+                    foreach (MenuItem menuItem in items)
+                    {
+                        if (menuItem != AddVector && vectors.Count == 0)
+                        {
+                            Print("Список векторов пуст.");
+                        }
+                        else
+                        {
+                            menuItem();
+                        }
+                    }
+                }
+            }
         }
 
         static void TestStreams() {
@@ -219,7 +322,7 @@ namespace Laba_7
         static void TestArrayOfVectors()
         {
             Print("Программа выполняет различные действия с векторами");
-            int vectorsCount = ReadInt("Введите длину массива массивов; тип вектора будет выбран случайно");
+            int vectorsCount = ReadInt("Введите длину массива массивов; тип вектора будет выбран случайно", 1, Int32.MaxValue);
 
             Random random = new Random();
 
