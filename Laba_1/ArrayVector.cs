@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Laba_6
+namespace Laba_7
 {
     [Serializable()]
     class ArrayVector : AbstractVector

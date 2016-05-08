@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Laba_6
+namespace Laba_7
 {
     interface Vector : IComparable<Vector>, ICloneable
     {
