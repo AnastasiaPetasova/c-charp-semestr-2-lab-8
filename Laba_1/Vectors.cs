@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Laba_7    
+namespace Laba_8    
 {
     static class Vectors
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{37C16DCF-9445-4DCA-ABC0-BCE70F0F7FA6}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Laba_7</RootNamespace>
-    <AssemblyName>Laba_7</AssemblyName>
+    <RootNamespace>Laba_8</RootNamespace>
+    <AssemblyName>Laba_8</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

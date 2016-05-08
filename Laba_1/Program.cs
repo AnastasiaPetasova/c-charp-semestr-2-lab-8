@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Laba_7
+namespace Laba_8
 {
     class Program
     {
