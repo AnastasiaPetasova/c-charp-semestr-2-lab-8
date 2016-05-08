@@ -96,9 +96,53 @@ namespace Laba_6
 
             FileInfo byteFile = new FileInfo(fileName + ".bin");
             FileInfo charFile = new FileInfo(fileName + ".txt");
+            FileInfo serializeFile = new FileInfo(fileName + ".data");
+            
+            Vector v = new ArrayVector(
+                new double[] {
+                    10, 9, 8, 7, 32, 11, 44, 3, 18
+                }
+            );
 
-            FileStream byteFileStream = new FileStream(byteFile.FullName, FileMode.CreateNew);
-            //File.
+            Console.WriteLine(v);
+
+            using (FileStream byteFileStream = new FileStream(byteFile.FullName, FileMode.OpenOrCreate))
+            {
+                Vectors.OutputVector(v, byteFileStream);
+            }
+
+            using (FileStream byteFileReadStream = new FileStream(byteFile.FullName, FileMode.Open))
+            {
+                Vector readedV = Vectors.InputVector(byteFileReadStream);
+                Console.WriteLine(readedV);
+            }
+
+            using (TextWriter textWriteStream = new StreamWriter(new FileStream(charFile.FullName, FileMode.OpenOrCreate)))
+            {
+                Vectors.WriteVector(v, textWriteStream);
+            }
+
+            using (TextReader textReadStream = new StreamReader(new FileStream(charFile.FullName, FileMode.Open)))
+            {
+                Vector readedV = Vectors.ReadVector(textReadStream);
+                Console.WriteLine(readedV);
+            }
+
+            using (FileStream serializeFileStream = new FileStream(serializeFile.FullName, FileMode.OpenOrCreate))
+            {
+                Vectors.SerializeVector(v, serializeFileStream);
+            }
+
+            using (FileStream deserializeFileStream = new FileStream(serializeFile.FullName, FileMode.Open))
+            {
+                Vector readedV = Vectors.DeserializeVector(deserializeFileStream);
+                Console.WriteLine(readedV);
+                Console.WriteLine("outputVector == inputVector: " + (v == readedV));
+                Console.WriteLine("outputVector.equals(inputVector): " + v.Equals(readedV));
+            }
+
+            Console.ReadKey();
+
             //byteFileStream.Write(str)
         }
 

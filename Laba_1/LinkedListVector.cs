@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Laba_6
 {
+    [Serializable()]
     class LinkedListVector : AbstractVector
     {
         protected class Node
@@ -28,13 +29,19 @@ namespace Laba_6
         Node first;
         int length;
 
-        public LinkedListVector(int length)
+        public LinkedListVector(double[] coordinates)
         {
             this.length = 0;
 
-            for (int i = 0; i < length; ++i)
-                AddNode(new Node());
+            for (int i = 0; i < coordinates.Length; ++i)
+            {
+                AddNode(new Node(coordinates[i]));
+            }
         }
+
+        public LinkedListVector(int length)
+            : this(new double[length])
+        { }
 
         public LinkedListVector() : this(5)
         { }

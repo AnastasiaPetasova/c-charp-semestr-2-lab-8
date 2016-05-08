@@ -3,6 +3,7 @@ using System.Text;
 
 namespace Laba_6
 {
+    [Serializable()]
     class ArrayVector : AbstractVector
     {
         private double[] coordinates;
@@ -17,12 +18,15 @@ namespace Laba_6
         {
             get { return coordinates.Length; }
         }
+
+        public ArrayVector(double[] coordinates)
+        {
+            this.coordinates = coordinates;
+        }
          
         public ArrayVector(int n)
-        {
-            coordinates = new double[n];
-        }
-
+            : this(new double[n])
+        { }
 
         public ArrayVector() : this(5)
         { }

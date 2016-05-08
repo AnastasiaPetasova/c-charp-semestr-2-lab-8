@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Laba_6
 {
+    [Serializable()]
     abstract class AbstractVector : Vector
     {
         public abstract double this[int index] { get; set; }
